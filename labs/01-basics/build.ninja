@@ -1,0 +1,8 @@
+rule decorate
+  command = mkdir -p build && sed "s/^/$message /" $in > $out
+  description = DECORATE $out
+
+build build/greeting.txt: decorate greeting.txt
+  message = Ninja says:
+
+default build/greeting.txt

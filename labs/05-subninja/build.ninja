@@ -1,0 +1,17 @@
+include config.ninja
+
+rule cc
+  command = mkdir -p build && $cc $cflags -MMD -MF $out.d -c $in -o $out
+  depfile = $out.d
+  deps = gcc
+  description = CC $out
+
+rule link
+  command = $cc $in -o $out
+  description = LINK $out
+
+subninja src/build.ninja
+
+build build/app: link build/main.o build/answer.o
+
+default build/app

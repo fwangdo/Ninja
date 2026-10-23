@@ -1,0 +1,20 @@
+rule generate_version
+  command = mkdir -p build && python3 gen_version.py $in $out
+  description = GEN $out
+  restat = 1
+
+rule cc
+  command = cc -Wall -Wextra -std=c11 -Ibuild -MMD -MF $out.d -c $in -o $out
+  depfile = $out.d
+  deps = gcc
+  description = CC $out
+
+rule link
+  command = cc $in -o $out
+  description = LINK $out
+
+build build/version.h: generate_version VERSION | gen_version.py
+build build/main.o: cc main.c | build/version.h
+build build/version: link build/main.o
+
+default build/version

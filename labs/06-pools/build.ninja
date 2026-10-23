@@ -1,0 +1,20 @@
+pool expensive
+  depth = 2
+
+rule task
+  command = mkdir -p build && python3 task.py $name $out
+  description = TASK $name
+  pool = expensive
+
+build build/one.txt: task task.py
+  name = one
+build build/two.txt: task task.py
+  name = two
+build build/three.txt: task task.py
+  name = three
+build build/four.txt: task task.py
+  name = four
+
+build all: phony build/one.txt build/two.txt build/three.txt build/four.txt
+
+default all

@@ -1,0 +1,17 @@
+cc = cc
+cflags = -Wall -Wextra -std=c11
+
+rule cc
+  command = mkdir -p build && $cc $cflags -MMD -MF $out.d -c $in -o $out
+  depfile = $out.d
+  deps = gcc
+  description = CC $out
+
+rule link
+  command = $cc $in -o $out
+  description = LINK $out
+
+build build/hello.o: cc hello.c
+build build/hello: link build/hello.o
+
+default build/hello

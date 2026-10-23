@@ -1,0 +1,4 @@
+cflags = $cflags -Isrc
+
+build build/main.o: cc src/main.c
+build build/answer.o: cc src/answer.c
